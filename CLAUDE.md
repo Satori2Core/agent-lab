@@ -92,5 +92,5 @@ Week 0 — 正在构建编码 Agent 自身（元工具层）
 
 - 实践路线图：`PRACTICE.md`
 - 知识映射：`KNOWLEDGE_MAP.md`
-- 原始项目：`../github-project/smolagents/`
-- 学习笔记：`../LearnAgent/`
+- 原始项目：<https://github.com/huggingface/smolagents>
+- 学习笔记：<https://github.com/Satori2Core/LearnAgent>

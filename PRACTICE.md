@@ -2,7 +2,7 @@
 
 > 通过亲手构建 smolagents 的 Go 实现，渐进掌握 Agent 工程核心知识。
 >
-> 关联笔记项目：[LearnAgent](../LearnAgent/)
+> 关联笔记项目：[LearnAgent](https://github.com/Satori2Core/LearnAgent)
 
 ## 总览
 

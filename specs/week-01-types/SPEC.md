@@ -57,4 +57,4 @@ AgentAudio ← []float32{...} / filepath / []byte(WAV)
 ### 参考
 
 - smolagents `agent_types.py`：`AgentType`, `AgentText`, `AgentImage`, `AgentAudio`
-- 文件路径：`../github-project/smolagents/src/smolagents/agent_types.py`
+- 文件路径：<https://github.com/huggingface/smolagents/blob/main/src/smolagents/agent_types.py>
