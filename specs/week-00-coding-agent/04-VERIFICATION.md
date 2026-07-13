@@ -30,7 +30,7 @@ V7-V8：需要 AI Chat 参与的定性实验。
 
 ```bash
 # 在 agent-lab 项目根目录下
-cd E:\Yang\learn\agent-lab
+cd agent-lab
 bash specs/week-00-coding-agent/verify.sh
 ```
 

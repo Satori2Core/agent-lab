@@ -33,7 +33,7 @@
 ## 开始
 
 ```bash
-cd E:\Yang\learn\agent-lab
+cd agent-lab
 go test ./...                 # 运行所有测试
 go run ./cmd/comment-check/   # 手动运行注释检查
 codegraph status              # 查看代码图谱

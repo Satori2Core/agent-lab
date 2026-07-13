@@ -9,7 +9,7 @@
 #   AGENT-TOOL    — Tool 的独立可运行性
 #
 # 运行方式：
-#   cd E:\Yang\learn\agent-lab
+#   cd agent-lab
 #   powershell -ExecutionPolicy Bypass -File specs\week-00-coding-agent\verify.ps1
 # ============================================================
 
