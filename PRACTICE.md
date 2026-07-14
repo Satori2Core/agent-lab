@@ -9,8 +9,8 @@
 | Week | 模块 | 路径 | 核心概念 | 状态 |
 |------|------|------|---------|------|
 | 0 | 构建编码 Agent | `CLAUDE.md` + `cmd/comment-check/` | System Prompt、Tool、Hook、RAG | ✅ |
-| 1 | Agent 多模态类型系统 | `pkg/types/` | interface 多态、AgentType 抽象 | ⬜ |
-| 2 | LLM 模型抽象层 | `pkg/models/` | 模型接口、流式输出、多供应商 | ⬜ |
+| 1 | Agent 多模态类型系统 | `pkg/types/` | interface 多态、AgentType 抽象 | ✅ |
+| 2 | LLM 模型抽象层 | `pkg/models/` | 模型接口、流式输出、多供应商 | ✅ |
 | 3 | 工具系统 | `pkg/tools/` | Tool 定义/注册/调用、JSON Schema | ⬜ |
 | 4 | 记忆系统 | `pkg/memory/` | 步骤追踪、上下文管理 | ⬜ |
 | 5 | ReAct 核心循环 | `pkg/agent/` | 思考-行动-观察循环 | ⬜ |
