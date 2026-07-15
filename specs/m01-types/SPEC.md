@@ -1,4 +1,4 @@
-# Week 1: Agent 多模态类型系统
+# Module 1: Agent 多模态类型系统
 
 ## 要解决的问题
 

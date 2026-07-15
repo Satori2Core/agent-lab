@@ -1,4 +1,4 @@
-# Week 2 — 任务分解
+# Module 2 — 任务分解
 
 ## Task 1: 定义 ChatMessage 和辅助类型
 

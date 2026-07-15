@@ -1,4 +1,4 @@
-# Week 0 实践指南：构建编码 Agent
+# Module 0 实践指南：构建编码 Agent
 
 ## 一、我们做了什么？
 
@@ -153,7 +153,7 @@ MultiStepAgent.run()              完整的编码工作流
   (循环: 思考→行动→观测→重复)       (写→检查→修正→通过)
 ```
 
-**但有一个关键差异**：smolagents 的 Agent 是通过代码逻辑（`while` 循环）实现的，而我们的编码 Agent 部分依赖 AI 的"自觉"。Week 5 我们实现 `MultiStepAgent` 时，这个差异会消除——我们会写出真正由代码驱动循环的 Agent。
+**但有一个关键差异**：smolagents 的 Agent 是通过代码逻辑（`while` 循环）实现的，而我们的编码 Agent 部分依赖 AI 的"自觉"。Module 5 我们实现 `MultiStepAgent` 时，这个差异会消除——我们会写出真正由代码驱动循环的 Agent。
 
 ---
 
@@ -165,7 +165,7 @@ MultiStepAgent.run()              完整的编码工作流
 
 ```powershell
 # 在 agent-lab 项目根目录
-.\specs\week-00-coding-agent\verify.ps1
+.\specs\m00-coding-agent\verify.ps1
 ```
 
 它会：

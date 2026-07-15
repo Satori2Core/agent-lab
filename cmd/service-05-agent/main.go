@@ -21,7 +21,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Week 5: ReAct 核心循环 — 端到端验证")
+	fmt.Println("Module 5: ReAct 核心循环 — 端到端验证")
 	fmt.Println("============================================")
 
 	apiKey := os.Getenv("OPENAI_API_KEY")

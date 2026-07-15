@@ -86,7 +86,7 @@ package types
 
 ## 当前进度
 
-Week 0 — 正在构建编码 Agent 自身（元工具层）
+Module 0 — 正在构建编码 Agent 自身（元工具层）
 
 ## 关键参考
 

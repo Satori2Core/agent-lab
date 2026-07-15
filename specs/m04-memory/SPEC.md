@@ -1,4 +1,4 @@
-# Week 4: 记忆系统
+# Module 4: 记忆系统
 
 ## 要解决的问题
 
@@ -75,7 +75,7 @@ func (m *AgentMemory) MessagesWithLimit(maxMessages int) []ChatMessage
 1. **接口统一** — 所有步骤类型实现 `MemoryStep`，通过 `Type()` 区分
 2. **可回放** — `Replay()` 输出完整的执行轨迹，便于调试
 3. **上下文截断** — `MessagesWithLimit` 防止超出 LLM 上下文窗口
-4. **与 Week 2 集成** — `Messages()` 返回 `models.ChatMessage` 列表，可直接传给 `Model.Generate()`
+4. **与 Module 2 集成** — `Messages()` 返回 `models.ChatMessage` 列表，可直接传给 `Model.Generate()`
 
 ### 参考
 

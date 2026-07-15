@@ -1,6 +1,6 @@
 # 工程验收手册：编码 Agent 系统
 
-> 验证 Week 0 构建的编码 Agent 系统组件是否正常运作。
+> 验证 Module 0 构建的编码 Agent 系统组件是否正常运作。
 >
 > **核心原则**：此验收不依赖 AI Chat — 你可以在终端独立运行所有检查。
 
@@ -31,7 +31,7 @@ V7-V8：需要 AI Chat 参与的定性实验。
 ```bash
 # 在 agent-lab 项目根目录下
 cd agent-lab
-bash specs/week-00-coding-agent/verify.sh
+bash specs/m00-coding-agent/verify.sh
 ```
 
 ### 预期结果
@@ -44,9 +44,9 @@ bash specs/week-00-coding-agent/verify.sh
   ✅ 存在: go.mod
   ✅ 存在: .claude/settings.json
   ✅ 存在: cmd/comment-check/main.go
-  ✅ 存在: specs/week-00-coding-agent/SPEC.md
-  ✅ 存在: specs/week-00-coding-agent/TASKS.md
-  ✅ 存在: specs/week-00-coding-agent/PRACTICE_GUIDE.md
+  ✅ 存在: specs/m00-coding-agent/SPEC.md
+  ✅ 存在: specs/m00-coding-agent/TASKS.md
+  ✅ 存在: specs/m00-coding-agent/PRACTICE_GUIDE.md
 
 ━━━ 检查 2: comment-check 编译 ━━━
   ✅ 编译成功
@@ -65,7 +65,7 @@ bash specs/week-00-coding-agent/verify.sh
   ✅ 规则存在: 工作流程
 
 ━━━ 检查 6: KNOWLEDGE_MAP 覆盖度 ━━━
-  ✅ 知识映射存在: Week 0-5
+  ✅ 知识映射存在: Module 0-5
 
 ============================================================
   验证结果: 全部通过，0 失败
@@ -81,7 +81,7 @@ bash specs/week-00-coding-agent/verify.sh
 | V3 | `comment-check` 自己的代码有 godoc 注释 | 工具没有遵守自己定的规则 |
 | V4 | 能检测到"无注释"和"格式错误"两种违规类型 | 工具检测逻辑有 bug |
 | V5 | `CLAUDE.md` 包含 5 项核心规则 | 编码 Agent 的 System Prompt 不完整 |
-| V6 | `KNOWLEDGE_MAP.md` 覆盖了 Week 0-5 | 知识映射有盲区 |
+| V6 | `KNOWLEDGE_MAP.md` 覆盖了 Module 0-5 | 知识映射有盲区 |
 
 ### 如果某项失败
 
@@ -106,7 +106,7 @@ go run ./cmd/comment-check/ -- path/to/file.go
 2. 对 AI 发送以下任务（复制整段）：
 
 ```
-在 specs/week-00-coding-agent/experiment/with_agent/ 目录下，
+在 specs/m00-coding-agent/experiment/with_agent/ 目录下，
 新建文件 greeter.go，包含：
 
 - 包名 greeter
@@ -121,7 +121,7 @@ go run ./cmd/comment-check/ -- path/to/file.go
 3. AI 完成代码后，在终端运行（不要用 AI 运行）：
 
 ```bash
-go run ./cmd/comment-check/ -- specs/week-00-coding-agent/experiment/with_agent/
+go run ./cmd/comment-check/ -- specs/m00-coding-agent/experiment/with_agent/
 ```
 
 ### 预期结果
@@ -151,7 +151,7 @@ go run ./cmd/comment-check/ -- specs/week-00-coding-agent/experiment/with_agent/
 1. 告诉 AI：
 ```
 运行这个命令并观察输出:
-go run ./cmd/comment-check/ -- specs/week-00-coding-agent/experiment/feedback_loop/bad.go
+go run ./cmd/comment-check/ -- specs/m00-coding-agent/experiment/feedback_loop/bad.go
 
 输出显示有 4 处违规。
 你的任务：仅根据上面的违规报告来修改 bad.go，使 comment-check 通过。
@@ -207,7 +207,7 @@ AI 是否只用工具输出: _______
 
 ```bash
 # 一键系统验证（V1-V6）
-bash specs/week-00-coding-agent/verify.sh
+bash specs/m00-coding-agent/verify.sh
 
 # 单独检查某文件
 go run ./cmd/comment-check/ -- <文件路径>

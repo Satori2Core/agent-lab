@@ -1,4 +1,4 @@
-# Week 0 — 任务分解
+# Module 0 — 任务分解
 
 ## Task 1: 设计编码 Agent 的 System Prompt ✅
 
@@ -10,9 +10,9 @@
 ## Task 2: 设计知识映射模板 ✅
 
 - 文件：`KNOWLEDGE_MAP.md`
-- 内容：定义每个 Week 的 Agent 知识点 ↔ 代码映射关系
+- 内容：定义每个 Module 的 Agent 知识点 ↔ 代码映射关系
 - 对标知识点：`AGENT-RAG` — 知识注入
-- 验证：每个 Week 至少 3 个知识点条目
+- 验证：每个 Module 至少 3 个知识点条目
 
 ## Task 3: 实现注释检查工具 ✅
 
@@ -31,7 +31,7 @@
 ## 完成标准
 
 - [x] CLAUDE.md 定义了 Agent 的完整行为规则
-- [x] KNOWLEDGE_MAP.md 覆盖了 Week 0-7 的知识点
+- [x] KNOWLEDGE_MAP.md 覆盖了 Module 0-7 的知识点
 - [x] comment-check 工具可运行且通过自检
 - [x] Hook 配置完成，下次启动生效
-- [ ] 用户在 agent-lab 目录新开 VSCode 窗口，Week 0 结束
+- [ ] 用户在 agent-lab 目录新开 VSCode 窗口，Module 0 结束

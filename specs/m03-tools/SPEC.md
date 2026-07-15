@@ -1,4 +1,4 @@
-# Week 3: Tool 系统
+# Module 3: Tool 系统
 
 ## 要解决的问题
 
@@ -8,7 +8,7 @@ Tool 系统的核心挑战：
 1. **怎么描述工具给 LLM？** → JSON Schema（function calling 标准）
 2. **怎么校验 LLM 传的参数？** → 执行前验证
 3. **怎么注册和管理多个工具？** → ToolRegistry
-4. **怎么让工具返回的结果能被 Agent 统一处理？** → 返回 `AgentType`（Week 1）
+4. **怎么让工具返回的结果能被 Agent 统一处理？** → 返回 `AgentType`（Module 1）
 
 在 smolagents 中，`@tool` 装饰器 + `ToolCollection` 承担了这个角色。
 
@@ -28,7 +28,7 @@ type Tool struct {
 
 // ToolFunc 工具执行函数的通用签名。
 // 输入：json.RawMessage（LLM 传的 JSON 参数）
-// 输出：types.AgentType（Week 1 的类型系统）
+// 输出：types.AgentType（Module 1 的类型系统）
 type ToolFunc func(ctx context.Context, input json.RawMessage) (types.AgentType, error)
 ```
 
@@ -79,7 +79,7 @@ func (t *Tool) Validate(input json.RawMessage) error
 
 1. **零外部依赖** — JSON Schema 生成只用 `reflect` + `encoding/json`
 2. **类型安全** — `NewTool` 用泛型在编译期检查输入输出类型
-3. **与 Week 1 集成** — Tool 返回 `types.AgentType`，不是裸 `any`
+3. **与 Module 1 集成** — Tool 返回 `types.AgentType`，不是裸 `any`
 4. **OpenAI 兼容** — `ToOpenAI()` 输出可直接塞进 Chat Completions API 的 `tools` 字段
 
 ### 参考

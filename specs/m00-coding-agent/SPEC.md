@@ -1,4 +1,4 @@
-# Week 0: 构建"编码 Agent"（元工具层）
+# Module 0: 构建"编码 Agent"（元工具层）
 
 ## 要解决的问题
 
@@ -7,7 +7,7 @@
 - 写了代码但不理解对应的 Agent 知识点
 - AI 自由发挥，产出不可控
 
-**Week 0 的目标**：设计一套 Agent 工程约束，让 AI 编码过程变得**自主可控**。
+**Module 0 的目标**：设计一套 Agent 工程约束，让 AI 编码过程变得**自主可控**。
 
 ## 对标 Agent 知识点
 
@@ -25,12 +25,12 @@
 2. **知识映射模板** → `KNOWLEDGE_MAP.md`
 3. **注释检查工具** → `cmd/comment-check/main.go`
 4. **自动验证 Hook** → `.claude/settings.json`
-5. **Week 0 的 SPEC + TASKS** → `specs/week-00-coding-agent/`
+5. **Module 0 的 SPEC + TASKS** → `specs/m00-coding-agent/`
 
 ## 工作流设计
 
 ```
-用户说"开始 Week N Task M"
+用户说"开始 Module N Task M"
         │
         ▼
 ┌─────────────────────────────────────────────┐

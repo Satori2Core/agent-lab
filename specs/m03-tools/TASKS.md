@@ -1,4 +1,4 @@
-# Week 3 — 任务分解
+# Module 3 — 任务分解
 
 ## Task 1: Tool 结构体 + JSON Schema 生成
 

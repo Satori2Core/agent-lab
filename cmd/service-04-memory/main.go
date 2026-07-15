@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Week 4: 记忆系统 — 集成验证")
+	fmt.Println("Module 4: 记忆系统 — 集成验证")
 	fmt.Println("============================================")
 
 	// ─── 模拟 Agent 执行轨迹 ───

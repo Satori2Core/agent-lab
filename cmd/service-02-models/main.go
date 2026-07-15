@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Week 2: LLM 模型抽象层 — 集成验证")
+	fmt.Println("Module 2: LLM 模型抽象层 — 集成验证")
 	fmt.Println("============================================")
 
 	apiKey := os.Getenv("OPENAI_API_KEY")

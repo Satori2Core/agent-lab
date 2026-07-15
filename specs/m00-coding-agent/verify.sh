@@ -11,7 +11,7 @@
 #
 # 运行:
 #   cd /e/Yang/learn/agent-lab
-#   bash specs/week-00-coding-agent/verify.sh
+#   bash specs/m00-coding-agent/verify.sh
 # ============================================================
 
 set -e
@@ -47,9 +47,9 @@ REQUIRED_FILES=(
     "go.mod"
     ".claude/settings.json"
     "cmd/comment-check/main.go"
-    "specs/week-00-coding-agent/SPEC.md"
-    "specs/week-00-coding-agent/TASKS.md"
-    "specs/week-00-coding-agent/PRACTICE_GUIDE.md"
+    "specs/m00-coding-agent/SPEC.md"
+    "specs/m00-coding-agent/TASKS.md"
+    "specs/m00-coding-agent/PRACTICE_GUIDE.md"
 )
 
 for f in "${REQUIRED_FILES[@]}"; do

@@ -1,4 +1,4 @@
-# Week 1 — 任务分解
+# Module 1 — 任务分解
 
 > 完成条件：每个任务完成后运行 `go test ./pkg/types/...` 通过
 

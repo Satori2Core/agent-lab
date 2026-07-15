@@ -21,7 +21,7 @@ import (
 // 对标 smolagents 中 Tool.forward() 的签名。
 // 每个 Tool 的内部执行函数都符合此签名：
 //   输入：json.RawMessage — LLM 传入的 JSON 参数
-//   输出：types.AgentType — 统一的多模态返回类型（Week 1）
+//   输出：types.AgentType — 统一的多模态返回类型（Module 1）
 type ToolFunc func(ctx context.Context, input json.RawMessage) (types.AgentType, error)
 
 // Tool 表示一个 Agent 可调用的工具。

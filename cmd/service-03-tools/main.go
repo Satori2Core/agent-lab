@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Week 3: Tool 系统 — 集成验证")
+	fmt.Println("Module 3: Tool 系统 — 集成验证")
 	fmt.Println("============================================")
 
 	// ─── 1. 创建 ToolRegistry ───

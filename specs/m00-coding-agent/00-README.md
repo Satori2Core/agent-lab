@@ -1,4 +1,4 @@
-# Week 0: 构建"编码 Agent"（元工具层）
+# Module 0: 构建"编码 Agent"（元工具层）
 
 > **一句话**：设计一套 Agent 工程约束，让 AI 编码过程变得自主可控。
 >
@@ -46,7 +46,7 @@
 | `KNOWLEDGE_MAP.md` | 知识点 ↔ 代码映射表 | RAG 知识注入 |
 | `cmd/comment-check/main.go` | 注释检查工具源码 | Tool 设计 |
 | `.claude/settings.json` | 自动验证 Hook | Observation 反馈 |
-| `PRACTICE.md` | 7 Week 总路线图 | Memory 记忆 |
+| `PRACTICE.md` | 7 Module 总路线图 | Memory 记忆 |
 
 ---
 

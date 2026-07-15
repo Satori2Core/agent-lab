@@ -6,7 +6,7 @@
 
 ## 总览
 
-| Week | 模块 | 路径 | 核心概念 | 状态 |
+| Module | 模块 | 路径 | 核心概念 | 状态 |
 |------|------|------|---------|------|
 | 0 | 构建编码 Agent | `CLAUDE.md` + `cmd/comment-check/` | System Prompt、Tool、Hook、RAG | ✅ |
 | 1 | Agent 多模态类型系统 | `pkg/types/` | interface 多态、AgentType 抽象 | ✅ |
@@ -28,7 +28,7 @@
 | Planning | `specs/<week>/TASKS.md` | 拆成可验证的小步 |
 | Observation | `*_test.go` + Hook | 测试验证 + 保存文件自动检查 |
 | RAG | `KNOWLEDGE_MAP.md` | Agent 知识点注入到编码上下文 |
-| Memory | `PRACTICE.md` 进度表 | 追踪已完成/未完成的 Week 和 Task |
+| Memory | `PRACTICE.md` 进度表 | 追踪已完成/未完成的 Module 和 Task |
 
 ## 开始
 

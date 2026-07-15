@@ -40,9 +40,9 @@ type RunResult struct {
 // MultiStepAgent 是一个基于 ReAct 循环的自主 Agent。
 //
 // 它组合了三个核心模块：
-//   - Model（Week 2）：调用 LLM 进行推理
-//   - ToolRegistry（Week 3）：提供可调用的工具
-//   - AgentMemory（Week 4）：记录执行历史和上下文
+//   - Model（Module 2）：调用 LLM 进行推理
+//   - ToolRegistry（Module 3）：提供可调用的工具
+//   - AgentMemory（Module 4）：记录执行历史和上下文
 //
 // 对标 smolagents agents.py → MultiStepAgent 类
 //   Python: class MultiStepAgent(ABC): run(), step(), _run()
@@ -105,15 +105,16 @@ func (a *MultiStepAgent) Run(ctx context.Context, task string) (*RunResult, erro
 	startTime := time.Now()
 	mem := memory.NewAgentMemory()
 
-	// Step 0: 初始化记忆——写入系统提示和用户任务
+	// Step 0: 初始化记忆和消息
 	sysPrompt := a.prompt.Build()
 	mem.Record(memory.NewSystemPromptStep(sysPrompt))
 	mem.Record(memory.NewActionStep(0, "收到任务", "无", task, 0, nil))
 
-	// 用户消息单独添加（不作为 MemoryStep，直接拼到 Messages 末尾）
-	userMsg := models.ChatMessage{Role: models.RoleUser, Content: task}
-	messages := mem.Messages()
-	messages = append(messages, userMsg)
+	// 构建初始消息列表：system prompt + user task
+	messages := []models.ChatMessage{
+		{Role: models.RoleSystem, Content: sysPrompt},
+		{Role: models.RoleUser, Content: task},
+	}
 
 	// 主循环
 	for step := 1; step <= a.maxSteps; step++ {
@@ -131,35 +132,50 @@ func (a *MultiStepAgent) Run(ctx context.Context, task string) (*RunResult, erro
 
 		// 2. 检查是否需要调用工具
 		if len(response.ToolCalls) > 0 {
-			// 执行工具调用
-			tc := response.ToolCalls[0] // 目前只处理第一个 tool call
+			// 2a. 将 assistant 的 tool call 请求追加到消息列表（一次性包含所有 tool calls）
+			messages = append(messages, models.ChatMessage{
+				Role:      models.RoleAssistant,
+				Content:   response.Content,
+				ToolCalls: response.ToolCalls,
+			})
 
-			tool, ok := a.tools.Get(tc.Function.Name)
-			if !ok {
-				obs := fmt.Sprintf("错误: 工具 %q 不存在", tc.Function.Name)
-				mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, obs, 0, fmt.Errorf("%s", obs)))
-			} else {
-				// 校验参数
+			// 2b. 逐一执行每个 tool call，每个必须对应一条 tool 消息
+			for _, tc := range response.ToolCalls {
+				tool, ok := a.tools.Get(tc.Function.Name)
+				if !ok {
+					obs := fmt.Sprintf("错误: 工具 %q 不存在", tc.Function.Name)
+					mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, obs, 0, fmt.Errorf("%s", obs)))
+					messages = append(messages, models.ChatMessage{
+						Role: models.RoleTool, Content: obs, ToolCallID: tc.ID,
+					})
+					continue
+				}
+
 				params := json.RawMessage(tc.Function.Arguments)
 				if err := tool.Validate(params); err != nil {
 					obs := fmt.Sprintf("参数校验失败: %v", err)
 					mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, obs, 0, err))
+					messages = append(messages, models.ChatMessage{
+						Role: models.RoleTool, Content: obs, ToolCallID: tc.ID,
+					})
+					continue
+				}
+
+				result, err := tool.Fn(ctx, params)
+				duration := time.Since(startTime).Seconds()
+				if err != nil {
+					mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, "", duration, err))
+					messages = append(messages, models.ChatMessage{
+						Role: models.RoleTool, Content: fmt.Sprintf("错误: %v", err), ToolCallID: tc.ID,
+					})
 				} else {
-					// 执行工具
-					result, err := tool.Fn(ctx, params)
-					duration := time.Since(startTime).Seconds()
-					if err != nil {
-						mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, "", duration, err))
-					} else {
-						obs := result.String()
-						mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, obs, duration, nil))
-					}
+					obs := result.String()
+					mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, obs, duration, nil))
+					messages = append(messages, models.ChatMessage{
+						Role: models.RoleTool, Content: obs, ToolCallID: tc.ID,
+					})
 				}
 			}
-
-			// 更新 messages——添加 tool 调用结果
-			messages = mem.Messages()
-			messages = append(messages, userMsg)
 		} else {
 			// 3. 模型返回纯文本 = 最终答案
 			mem.Record(memory.NewFinalAnswerStep(response.Content))

@@ -73,7 +73,7 @@ func printAgentType(at types.AgentType, label string) {
 }
 
 func main() {
-	fmt.Println("Week 1: Agent 多模态类型系统 — 集成验证")
+	fmt.Println("Module 1: Agent 多模态类型系统 — 集成验证")
 	fmt.Println("============================================")
 
 	// ─── AgentText ───
