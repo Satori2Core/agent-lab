@@ -53,7 +53,21 @@ type MultiStepAgent struct {
 	maxSteps int
 	name     string
 	prompt   *SystemPromptBuilder
+	onStep   StepObserver
 }
+
+// StepInfo 包含单步执行的信息，供 Observer 使用。
+type StepInfo struct {
+	Step        int
+	Thought     string
+	Action      string
+	Observation string
+	Duration    float64
+	Error       error
+}
+
+// StepObserver 是步骤回调函数——每完成一步就调用一次，实现实时日志。
+type StepObserver func(info StepInfo)
 
 // AgentOption 是 MultiStepAgent 的配置函数。
 type AgentOption func(*MultiStepAgent)
@@ -61,6 +75,11 @@ type AgentOption func(*MultiStepAgent)
 // WithMaxSteps 设置最大执行步数（默认 10）。
 func WithMaxSteps(n int) AgentOption {
 	return func(a *MultiStepAgent) { a.maxSteps = n }
+}
+
+// WithStepObserver 设置步骤观察者——每步执行后回调，用于实时日志。
+func WithStepObserver(obs StepObserver) AgentOption {
+	return func(a *MultiStepAgent) { a.onStep = obs }
 }
 
 // WithSystemPrompt 设置自定义系统提示（覆盖默认的 prompt builder）。
@@ -141,6 +160,7 @@ func (a *MultiStepAgent) Run(ctx context.Context, task string) (*RunResult, erro
 
 			// 2b. 逐一执行每个 tool call，每个必须对应一条 tool 消息
 			for _, tc := range response.ToolCalls {
+				tStart := time.Now()
 				tool, ok := a.tools.Get(tc.Function.Name)
 				if !ok {
 					obs := fmt.Sprintf("错误: 工具 %q 不存在", tc.Function.Name)
@@ -148,6 +168,9 @@ func (a *MultiStepAgent) Run(ctx context.Context, task string) (*RunResult, erro
 					messages = append(messages, models.ChatMessage{
 						Role: models.RoleTool, Content: obs, ToolCallID: tc.ID,
 					})
+					if a.onStep != nil {
+						a.onStep(StepInfo{Step: step, Thought: response.Content, Action: tc.Function.Name, Observation: obs, Duration: time.Since(tStart).Seconds(), Error: fmt.Errorf("%s", obs)})
+					}
 					continue
 				}
 
@@ -158,22 +181,27 @@ func (a *MultiStepAgent) Run(ctx context.Context, task string) (*RunResult, erro
 					messages = append(messages, models.ChatMessage{
 						Role: models.RoleTool, Content: obs, ToolCallID: tc.ID,
 					})
+					if a.onStep != nil {
+						a.onStep(StepInfo{Step: step, Thought: response.Content, Action: tc.Function.Name, Observation: obs, Duration: time.Since(tStart).Seconds(), Error: err})
+					}
 					continue
 				}
 
-				result, err := tool.Fn(ctx, params)
-				duration := time.Since(startTime).Seconds()
-				if err != nil {
-					mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, "", duration, err))
-					messages = append(messages, models.ChatMessage{
-						Role: models.RoleTool, Content: fmt.Sprintf("错误: %v", err), ToolCallID: tc.ID,
-					})
+				result, execErr := tool.Fn(ctx, params)
+				duration := time.Since(tStart).Seconds()
+				var obs string
+				if execErr != nil {
+					obs = fmt.Sprintf("错误: %v", execErr)
+					mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, "", duration, execErr))
 				} else {
-					obs := result.String()
+					obs = result.String()
 					mem.Record(memory.NewActionStep(step, response.Content, tc.Function.Name, obs, duration, nil))
-					messages = append(messages, models.ChatMessage{
-						Role: models.RoleTool, Content: obs, ToolCallID: tc.ID,
-					})
+				}
+				messages = append(messages, models.ChatMessage{
+					Role: models.RoleTool, Content: obs, ToolCallID: tc.ID,
+				})
+				if a.onStep != nil {
+					a.onStep(StepInfo{Step: step, Thought: response.Content, Action: tc.Function.Name, Observation: obs, Duration: duration, Error: execErr})
 				}
 			}
 		} else {
