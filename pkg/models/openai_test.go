@@ -46,7 +46,7 @@ func TestOpenAIModelGenerate(t *testing.T) {
 	model := NewOpenAIModel("test-model", WithBaseURL(server.URL), WithAPIKey("test-key"))
 	resp, err := model.Generate(context.Background(), []ChatMessage{
 		{Role: RoleUser, Content: "Hi"},
-	})
+	}, nil)
 	if err != nil {
 		t.Fatalf("Generate() error: %v", err)
 	}
@@ -87,7 +87,7 @@ func TestOpenAIModelGenerateStream(t *testing.T) {
 	model := NewOpenAIModel("test-model", WithBaseURL(server.URL))
 	ch, err := model.GenerateStream(context.Background(), []ChatMessage{
 		{Role: RoleUser, Content: "Hi"},
-	})
+	}, nil)
 	if err != nil {
 		t.Fatalf("GenerateStream() error: %v", err)
 	}

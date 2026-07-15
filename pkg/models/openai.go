@@ -82,12 +82,9 @@ func NewOpenAIModel(modelID string, opts ...OpenAIOption) *OpenAIModel {
 	return m
 }
 
-// Generate 发送消息列表并返回完整响应（非流式）。
-//
-// 发送 POST /v1/chat/completions，stream=false，等待完整响应。
-// 对标 smolagents OpenAIModel.__call__/generate()。
-func (m *OpenAIModel) Generate(ctx context.Context, messages []ChatMessage) (*Response, error) {
-	body := m.buildRequestBody(messages, false)
+// Generate 发送消息列表和工具定义，返回完整响应（非流式）。
+func (m *OpenAIModel) Generate(ctx context.Context, messages []ChatMessage, tools []map[string]any) (*Response, error) {
+	body := m.buildRequestBody(messages, tools, false)
 	respData, err := m.doRequest(ctx, body)
 	if err != nil {
 		return nil, err
@@ -95,12 +92,9 @@ func (m *OpenAIModel) Generate(ctx context.Context, messages []ChatMessage) (*Re
 	return m.parseResponse(respData)
 }
 
-// GenerateStream 发送消息列表并通过 channel 返回流式增量。
-//
-// 发送 POST /v1/chat/completions，stream=true，解析 SSE 事件流。
-// 对标 smolagents 中的流式处理逻辑。
-func (m *OpenAIModel) GenerateStream(ctx context.Context, messages []ChatMessage) (<-chan Delta, error) {
-	body := m.buildRequestBody(messages, true)
+// GenerateStream 流式版本，参数同 Generate。
+func (m *OpenAIModel) GenerateStream(ctx context.Context, messages []ChatMessage, tools []map[string]any) (<-chan Delta, error) {
+	body := m.buildRequestBody(messages, tools, true)
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, m.buildURL(), bytes.NewReader(body))
 	if err != nil {
@@ -140,11 +134,14 @@ func (m *OpenAIModel) setHeaders(req *http.Request) {
 }
 
 // buildRequestBody 构造 HTTP 请求体。
-func (m *OpenAIModel) buildRequestBody(messages []ChatMessage, stream bool) []byte {
+func (m *OpenAIModel) buildRequestBody(messages []ChatMessage, tools []map[string]any, stream bool) []byte {
 	req := map[string]any{
 		"model":    m.modelID,
 		"messages": messages,
 		"stream":   stream,
+	}
+	if len(tools) > 0 {
+		req["tools"] = tools
 	}
 	data, _ := json.Marshal(req)
 	return data

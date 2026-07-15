@@ -52,7 +52,7 @@ func main() {
 	resp, err := model.Generate(ctx, []models.ChatMessage{
 		{Role: models.RoleSystem, Content: "你是一个有用的助手，回答尽量简短。"},
 		{Role: models.RoleUser, Content: "用一句话解释什么是 Agent"},
-	})
+	}, nil)
 	if err != nil {
 		fmt.Printf("  ❌ Generate 失败: %v\n", err)
 	} else {
@@ -67,7 +67,7 @@ func main() {
 
 	ch, err := model.GenerateStream(ctx2, []models.ChatMessage{
 		{Role: models.RoleUser, Content: "数到5"},
-	})
+	}, nil)
 	if err != nil {
 		fmt.Printf("  ❌ GenerateStream 失败: %v\n", err)
 		return

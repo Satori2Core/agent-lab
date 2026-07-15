@@ -12,11 +12,11 @@ type mockModel struct {
 	response string
 }
 
-func (m *mockModel) Generate(ctx context.Context, messages []ChatMessage) (*Response, error) {
+func (m *mockModel) Generate(ctx context.Context, messages []ChatMessage, tools []map[string]any) (*Response, error) {
 	return &Response{Content: m.response, FinishReason: "stop"}, nil
 }
 
-func (m *mockModel) GenerateStream(ctx context.Context, messages []ChatMessage) (<-chan Delta, error) {
+func (m *mockModel) GenerateStream(ctx context.Context, messages []ChatMessage, tools []map[string]any) (<-chan Delta, error) {
 	ch := make(chan Delta, 2)
 	go func() {
 		defer close(ch)
@@ -50,7 +50,7 @@ func TestMessageRoleValid(t *testing.T) {
 func TestModelInterface(t *testing.T) {
 	var m Model = &mockModel{response: "hello"}
 
-	resp, err := m.Generate(context.Background(), nil)
+	resp, err := m.Generate(context.Background(), nil, nil)
 	if err != nil {
 		t.Fatalf("Generate() unexpected error: %v", err)
 	}
@@ -63,7 +63,7 @@ func TestModelInterface(t *testing.T) {
 func TestModelInterfaceStream(t *testing.T) {
 	m := &mockModel{response: "hello world"}
 
-	ch, err := m.GenerateStream(context.Background(), nil)
+	ch, err := m.GenerateStream(context.Background(), nil, nil)
 	if err != nil {
 		t.Fatalf("GenerateStream() unexpected error: %v", err)
 	}
