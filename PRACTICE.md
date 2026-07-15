@@ -12,7 +12,7 @@
 | 1 | Agent 多模态类型系统 | `pkg/types/` | interface 多态、AgentType 抽象 | ✅ |
 | 2 | LLM 模型抽象层 | `pkg/models/` | 模型接口、流式输出、多供应商 | ✅ |
 | 3 | 工具系统 | `pkg/tools/` | Tool 定义/注册/调用、JSON Schema | ✅ |
-| 4 | 记忆系统 | `pkg/memory/` | 步骤追踪、上下文管理 | ⬜ |
+| 4 | 记忆系统 | `pkg/memory/` | 步骤追踪、上下文管理 | ✅ |
 | 5 | ReAct 核心循环 | `pkg/agent/` | 思考-行动-观察循环 | ⬜ |
 | 6 | Agent HTTP 服务化 | `cmd/agent-server/` | SSE 流式、生产部署 | ⬜ |
 | 7 | 代码执行 Agent | `pkg/agent/codeagent/` | 沙箱执行、安全隔离 | ⬜ |
