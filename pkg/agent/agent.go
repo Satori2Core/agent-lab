@@ -254,6 +254,15 @@ type StreamEvent struct {
 	Done   bool
 }
 
+// Name 返回 Agent 的名称。
+func (a *MultiStepAgent) Name() string { return a.name }
+
+// Model 返回 Agent 使用的 LLM 模型。
+func (a *MultiStepAgent) Model() models.Model { return a.model }
+
+// Tools 返回 Agent 的工具注册中心。
+func (a *MultiStepAgent) Tools() *tools.ToolRegistry { return a.tools }
+
 // EventType 表示流式事件的类型。
 type EventType string
 
