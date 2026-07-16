@@ -73,11 +73,11 @@ func (b *SystemPromptBuilder) Build() string {
 
 	// 3. 行为指令
 	sb.WriteString("## 行为规则\n\n")
-	sb.WriteString("1. 分析用户需求，决定是否需要调用工具\n")
-	sb.WriteString("2. 如果需要工具：返回 function call JSON\n")
+	sb.WriteString("1. 用户消息中如果包含城市名、关键词等工具所需的参数，立即调用工具，不要反问确认\n")
+	sb.WriteString("2. 如果确定需要工具：直接返回 function call JSON，不要输出解释文字\n")
 	sb.WriteString("3. 工具执行后，你会看到结果，然后决定下一步\n")
-	sb.WriteString("4. 当信息足够时，直接给出最终答案（不要继续调用工具）\n")
-	sb.WriteString("5. 如果没有可用的工具能帮助回答，也直接给出答案\n")
+	sb.WriteString("4. 当信息足够时，直接给出最终答案（不要再调工具）\n")
+	sb.WriteString("5. 如果没有任何工具能帮助回答，直接给出答案\n")
 
 	return sb.String()
 }

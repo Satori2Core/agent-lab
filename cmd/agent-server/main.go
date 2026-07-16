@@ -113,13 +113,15 @@ func initAgent(model models.Model) *agent.MultiStepAgent {
 	reg := tools.NewToolRegistry()
 
 	type WeatherInput struct {
-		City string `json:"city" desc:"城市名称，如 Beijing"`
+		City string `json:"city" desc:"城市名（支持中英文，如 北京/Beijing/shanghai）"`
 	}
 	weatherTool, _ := tools.NewTool("get_weather", "查询指定城市的天气",
 		func(ctx context.Context, input WeatherInput) (*types.AgentText, error) {
 			weatherMap := map[string]string{
 				"beijing":  "北京: 晴天, 22-28°C, 微风",
+				"北京":      "北京: 晴天, 22-28°C, 微风",
 				"shanghai": "上海: 多云, 25-32°C, 东南风3级",
+				"上海":      "上海: 多云, 25-32°C, 东南风3级",
 			}
 			if w, ok := weatherMap[input.City]; ok {
 				return types.NewAgentText(w)
