@@ -195,10 +195,15 @@ func streamHandler(ag *agent.MultiStepAgent) http.HandlerFunc {
 			return
 		}
 
-		// 创建一个 channel 接收步骤事件
+		// channel 接收步骤事件 + 结果
+		type streamResult struct {
+			result *agent.RunResult
+			err    error
+		}
 		stepCh := make(chan agent.StepInfo, 10)
+		resultCh := make(chan streamResult, 1)
 
-		// 在 goroutine 中执行 Agent，通过 observer 推送事件
+		// goroutine 执行 Agent
 		go func() {
 			defer close(stepCh)
 			agWithObserver := agent.NewMultiStepAgent(ag.Name(), ag.Model(), ag.Tools(),
@@ -207,17 +212,20 @@ func streamHandler(ag *agent.MultiStepAgent) http.HandlerFunc {
 					stepCh <- info
 				}),
 			)
-			agWithObserver.Run(r.Context(), req.Message)
+			result, err := agWithObserver.Run(r.Context(), req.Message)
+			resultCh <- streamResult{result, err}
 		}()
 
-		// 读取事件并写 SSE
+		// 读取步骤事件并写 SSE
+		totalSteps := 0
 		for info := range stepCh {
+			totalSteps = info.Step
 			event := SSEEvent{
-				Type:       "step",
-				Step:       info.Step,
-				Action:     info.Action,
-				Observation: info.Observation,
-				DurationMs: info.Duration * 1000,
+				Type:         "step",
+				Step:         info.Step,
+				Action:       info.Action,
+				Observation:  info.Observation,
+				DurationMs:   info.Duration * 1000,
 			}
 			if info.Error != nil {
 				event.Error = info.Error.Error()
@@ -225,8 +233,16 @@ func streamHandler(ag *agent.MultiStepAgent) http.HandlerFunc {
 			writeSSE(w, flusher, event)
 		}
 
-		// 发送结束事件
-		writeSSE(w, flusher, SSEEvent{Type: "done"})
+		// 发送最终结果
+		doneEvent := SSEEvent{Type: "done"}
+		if res := <-resultCh; res.err == nil && res.result != nil {
+			doneEvent.Answer = res.result.Answer
+			doneEvent.Step = totalSteps
+			doneEvent.DurationMs = float64(res.result.Duration.Microseconds()) / 1000
+		} else if res.err != nil {
+			doneEvent.Error = res.err.Error()
+		}
+		writeSSE(w, flusher, doneEvent)
 	}
 }
 
