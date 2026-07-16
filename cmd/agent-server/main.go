@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/Satori2Core/agent-lab/pkg/agent"
+	"github.com/Satori2Core/agent-lab/pkg/agent/codeagent"
 	"github.com/Satori2Core/agent-lab/pkg/models"
 	"github.com/Satori2Core/agent-lab/pkg/tools"
 	"github.com/Satori2Core/agent-lab/pkg/types"
@@ -130,7 +131,12 @@ func initAgent(model models.Model) *agent.MultiStepAgent {
 		})
 	reg.Register(weatherTool)
 
-	return agent.NewMultiStepAgent("助手", model, reg, agent.WithMaxSteps(5))
+	// 代码执行工具（M07 — 让 Agent 能写代码并执行）
+	executor := codeagent.NewLocalExecutor()
+	execTool, _ := codeagent.NewExecuteCodeTool(executor)
+	reg.Register(execTool)
+
+	return agent.NewMultiStepAgent("助手", model, reg, agent.WithMaxSteps(10))
 }
 
 // ─── Handlers ───
